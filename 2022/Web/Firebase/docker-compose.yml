@@ -1,0 +1,45 @@
+ version: '3.5'
+ 
+ services:
+   admin:
+     build: ./admin
+     depends_on:
+       - redis
+     networks:
+       - redis_net
+   server:
+     build: ./server
+     depends_on:
+       - redis
+     networks:
+       - redis_net
+     # ports:
+     #   - "8080:3000"
+   client:
+     build: ./client
+     depends_on:
+       - redis
+     networks:
+       - redis_net
+     # ports:
+     #   - "80:3000"
+   redis:
+    build: ./redis
+    networks:
+      - redis_net
+   nginx:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - redis_net
+    ports:
+      - 80:80
+    depends_on:
+      - server
+      - client
+      - redis
+
+
+ networks:
+   redis_net:
