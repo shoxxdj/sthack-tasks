@@ -1,0 +1,48 @@
+version: '3.5'
+services:
+ website:
+  build: ./website
+  depends_on:
+   - database
+  restart: always
+  volumes:
+    - ./website/code:/var/www/html
+  ports:
+   - 80:80
+  networks:
+   ct_net:
+    ipv4_address: 172.13.37.10
+ database:
+  image: mariadb
+  ports:
+   - 3306:3306
+  environment:
+   MYSQL_ROOT_PASSWORD: "root"
+  restart: always
+  volumes:
+    - ./database/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+  networks:
+   ct_net:
+    ipv4_address: 172.13.37.20
+ redis:
+   build: ./redis
+   ports:
+    - 6379:6379
+   networks:
+    ct_net:
+     ipv4_address: 172.13.37.30
+ admin:
+  build: ./admin
+  depends_on:
+   - redis
+   - database
+   - website
+  networks:
+   ct_net:
+    ipv4_address: 172.13.37.40
+networks:
+ ct_net:
+  driver: overlay
+  ipam:
+   config:
+    - subnet: 172.13.37.0/24

@@ -1,0 +1,4 @@
+# Allow access from a specific IP address
+order deny,allow
+deny from all
+allow from 172.13.37.40

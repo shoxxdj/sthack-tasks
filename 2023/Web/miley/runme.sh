@@ -1,0 +1,1 @@
+mv task/website/code/admin_interface_JntjKPI5Awrqih_cant_guess/git task/website/code/admin_interface_JntjKPI5Awrqih_cant_guess/.git
