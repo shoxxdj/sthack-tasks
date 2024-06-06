@@ -1,0 +1,65 @@
+version: "3.5"
+services:
+  website:
+    build: ./website
+    depends_on:
+      - redis
+    restart: always
+    ports:
+      - 80:80
+    links:
+      - "redis:redis"
+    networks:
+      - chall_net
+  admin_website:
+    build: ./admin_site
+    depends_on:
+      - redis
+    restart: always
+    links:
+      - "redis:redis"
+    networks:
+      - chall_net
+  redis:
+    image: redis
+    networks:
+      - chall_net
+  mysql:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: messages
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: not_a_flag
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - chall_net
+  bot:
+    build: ./bot
+    depends_on:
+      - redis
+    links:
+      - "redis:redis"
+      - "admin_website:admin_website"
+    networks:
+      - chall_net
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: my_nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  #   restart: always
+  #   links:
+  #     - "flag_site:flag_site"
+  #     - "website:website"
+  #   networks:
+  #     - chall_net
+  #   depends_on:
+  #     - flag_site
+  #     - website
+networks:
+  chall_net:
