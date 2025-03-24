@@ -1,0 +1,46 @@
+version : '3.5'
+services:
+ website:
+  build: ./website
+  depends_on:
+   - database
+  restart: always
+  volumes:
+   - ./website/code:/var/www/html
+   - ./tmp:/tmp
+  ports:
+   - 80:80
+  networks:
+   ct_net: 
+    ipv4_address: 172.13.37.10
+ database:
+  #build: ./database
+  image: mariadb
+  environment:
+   MYSQL_ROOT_PASSWORD: "root"
+#   MYSQL_USER: "user"
+#   MYSQL_PASSWORD: "user"
+#   MYSQL_DATABASE: "moviedb"
+  restart: always
+  ports:
+   - 3306:3306 
+  volumes:
+   - ./database/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+   - ./tmp:/tmp
+   - ./website/code:/var/www/html
+  networks:
+   ct_net: 
+    ipv4_address: 172.13.37.20
+ admin:
+   build: ./admin
+   networks:
+    ct_net: 
+     ipv4_address: 172.13.37.30
+
+networks:
+ ct_net:
+  driver: overlay
+  attachable: true
+  ipam:  
+   config:
+    - subnet: 172.13.37.0/24
