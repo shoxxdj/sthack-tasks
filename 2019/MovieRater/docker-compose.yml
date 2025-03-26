@@ -1,0 +1,62 @@
+version: "3.5"
+services:
+  website:
+    build: ./website
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+     - ./website/code:/var/www/html
+     - ./tmp:/tmp
+    ports:
+      - 80:80
+    links:
+      - "redis:redis"
+      - "database:database"
+    networks:
+      - chall_net
+  admin_website:
+    build: ./admin_website
+    depends_on:
+      - redis
+    restart: always
+    links:
+      - "redis:redis"
+    networks:
+      - chall_net
+    volumes:
+     - ./admin_website/app:/var/www/html
+     - ./tmp:/tmp
+    ports:
+     - 8181:80
+  redis:
+    image: redis
+    networks:
+      - chall_net
+   #  ports:
+   #    - 6379:6379
+  database:
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # MYSQL_DATABASE: messages
+      # MYSQL_USER: admin
+      # MYSQL_PASSWORD: not_a_flag
+    volumes:
+      - ./database/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./tmp:/tmp
+      - ./website/code:/var/www/html
+    networks:
+      - chall_net
+  bot:
+    build: ./bot
+    depends_on:
+      - redis
+    links:
+      - "redis:redis"
+      - "admin_website:admin_website"
+    networks:
+      - chall_net
+networks:
+  chall_net:
