@@ -58,5 +58,6 @@ services:
       - "admin_website:admin_website"
     networks:
       - chall_net
+    restart: always
 networks:
   chall_net:
