@@ -27,8 +27,8 @@ services:
     volumes:
      - ./admin_website/app:/var/www/html
      - ./tmp:/tmp
-    ports:
-     - 8181:80
+#    ports:
+#     - 8181:80
   redis:
     image: redis
     networks:
