@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Concert Shop</title>
+</head>
+<body>
+
+  <h1>Concert shop dev</h1>
+  <br/>
+
+  <form action="/register" method="post">
+    <input type="text" name="username" placeholder="username"/>
+    <br>
+    <input type="password" name="password" placeholder="password"/>
+    <br>
+      <i>Solve this captcha for register :</i>
+      <br />
+      <img src="<%= captchaImage %>" alt="Captcha" />
+      <br>
+    <input type="text" name="captcha" placeholder="captcha case sensitive"/>
+    <br>
+    <input type="submit" value="register !"/>
+  </form>
+
+  <hr/>
+
+  <form action="/login" method="post">
+    <input type="text" name="username" placeholder="username" />
+    <input type="password" name="password" placeholder="password" />
+    <input type="submit" value="login !" />
+  </form>
+
+</body>
+</html>

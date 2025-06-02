@@ -1,0 +1,91 @@
+version: "3.5"
+services:
+  website:
+    build: ./website
+    restart: always
+    depends_on:
+      - redis
+      - mysql
+    ports:
+      - 80:80
+    links:
+      - "redis:redis"
+      - "mysql:mysql"
+    networks:
+      - chall_net
+  admin_website:
+    build: ./admin_website
+    depends_on:
+      - redis
+      - mysql
+    restart: always
+    links:
+      - "redis:redis"
+      - "mysql:mysql"
+      - "under_construction:under_construction"
+    networks:
+      - chall_net
+  under_construction:
+    build: ./under_construction
+    depends_on:
+      - redis
+      - mysql
+    restart: always
+    links:
+      - "redis:redis"
+      - "mysql:mysql"
+    networks:
+      - chall_net
+  redis:
+    image: redis
+    networks:
+      - chall_net
+  mysql:
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: monmotdepasse
+      MARIADB_DATABASE: ma_base
+      MARIADB_USER: monutilisateur
+      MARIADB_PASSWORD: monmdp
+    networks:
+      - chall_net
+  bot:
+    build: ./bot
+    depends_on:
+      - redis
+    links:
+      - "redis:redis"
+      - "admin_website.local:admin_website.local"
+      - "under_construction.local:under_construction.local"
+    networks:
+      - chall_net
+  under_construction.local:
+    image: nginx:stable
+    # ports:
+    #   - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - under_construction
+    links:
+      - "under_construction:under_construction"
+    networks:
+      - chall_net
+
+  admin_website.local:
+    image: nginx:stable
+    # ports:
+    #   - "443:443"
+    volumes:
+      - ./nginx_admin/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx_admin/certs:/etc/nginx/certs:ro
+    depends_on:
+      - admin_website
+    links:
+      - "admin_website:admin_website"
+    networks:
+      - chall_net
+networks:
+  chall_net:

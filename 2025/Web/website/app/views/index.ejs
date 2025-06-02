@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bad Dev Contact</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #container {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 80%;
+            width: 400px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            /* Make sure the video stays behind the content */
+        }
+
+        .video-background iframe {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Make sure the video is not interactable */
+        }
+    </style>
+</head>
+
+    <body>
+            <div class="video-background">
+                <iframe src="https://www.youtube.com/embed/FFfdyV8gnWk?si=atM32Bq0s3d9vN53&amp;controls=0&amp;autoplay=1"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div id="container">
+                <h1>BadDevContact Form</h1>
+                <i>Want to contact me ? Send me a message here and I will open it as soon as I'm on my computer !</i>
+                    <form method="post" action="/feedbacks">
+                        <textarea cols="30" rows="10" name="feedback"></textarea>
+                        <!-- <div class="g-recaptcha" data-sitekey="6Lel40MrAAAAALG_h-d6WHBCzj-QnWMrKViIyY0Q"></div> -->
+                        <input type="submit" value="send" />
+                    </form>
+            </div>
+    </body>
+
+</html>
+
+
+
