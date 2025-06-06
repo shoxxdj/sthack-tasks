@@ -32,5 +32,4 @@ docker-compose up
 ```
 
 ## Writeup :
-
-TBD
+ - https://shoxxdj.fr/writeups/sthack-25-bad-dev.html
